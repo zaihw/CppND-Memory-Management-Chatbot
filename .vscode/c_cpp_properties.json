@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/wx-3.0-unofficial",
-                "/usr/lib/x86_64-linux-gnu/wx/include/base-unicode-3.0-unofficial/wx/"
+                "/usr/lib/x86_64-linux-gnu/wx/include/base-unicode-3.0-unofficial"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
