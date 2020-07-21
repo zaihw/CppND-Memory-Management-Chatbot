@@ -10,14 +10,12 @@ class ChatBotPanelDialog : public wxScrolledWindow
 {
 private:
     // control elements
-    wxBoxSizer *_dialogSizer;
+    wxBoxSizer* _dialogSizer;
     wxBitmap _image;
 
     //// STUDENT CODE
     ////
-
     std::unique_ptr<ChatLogic> _chatLogic;
-
     ////
     //// EOF STUDENT CODE
 
@@ -26,7 +24,7 @@ public:
     ChatBotPanelDialog(wxWindow *parent, wxWindowID id);
     ~ChatBotPanelDialog();
 
-    // getter / setter
+    // getter / setter using pointer
     ChatLogic* GetChatLogicHandle() { return _chatLogic.get(); }
 
     // events

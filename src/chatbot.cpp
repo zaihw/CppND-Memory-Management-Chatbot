@@ -45,18 +45,19 @@ ChatBot::~ChatBot() {
 // rule of five
 // move constructor
 ChatBot::ChatBot(ChatBot &&src) {
-  std::cout << "ChatBot Move Constructor called" << endl;
-  _image = src._image;
+  std::cout << "ChatBot Move Constructor called" << std::endl;
+  _image = new wxBitmap(*src._image);
   src._image = nullptr;
   _rootNode = src._rootNode;
   src._rootNode = nullptr;
   _chatLogic = src._chatLogic;
+  _chatLogic->SetChatbotHandle(this);
   src._chatLogic = nullptr;
 }
 
 // move overload
 ChatBot &ChatBot::operator=(ChatBot &&src) {
-  std::cout << "ChatBot Move Assign called" << endl;
+  std::cout << "ChatBot Move Assign called" << std::endl;
   if (this == &src)
     return *this;
   delete _image;
@@ -69,22 +70,24 @@ ChatBot &ChatBot::operator=(ChatBot &&src) {
 }
 
 // copy constructor
-ChatBot::ChatBot(const ChatBot &&src) {
-  std::cout << "ChatBot Copy Constructor" << endl;
+ChatBot::ChatBot(const ChatBot &src) {
+  std::cout << "ChatBot Copy Constructor" << std::endl;
   _image = new wxBitmap(*src._image);
   _rootNode = src._rootNode;
   _chatLogic = src._chatLogic;
+  _chatLogic->SetChatbotHandle(this);
 }
 
 // copy overload
 ChatBot &ChatBot::operator=(const ChatBot &src) {
-  std::cout << "ChatBot Copy Assign" << endl;
-  if (this == src)
+  std::cout << "ChatBot Copy Assign" << std::endl;
+  if (this == &src)
     return *this;
-  delete _image;
+  this->~ChatBot();
   _image = new wxBitmap(*src._image);
   _rootNode = src._rootNode;
   _chatLogic = src._chatLogic;
+  _chatLogic->SetChatbotHandle(this);
 
   return *this;
 }
@@ -133,7 +136,7 @@ void ChatBot::SetCurrentNode(GraphNode *node) {
   std::mt19937 generator(int(std::time(0)));
   std::uniform_int_distribution<int> dis(0, answers.size() - 1);
   std::string answer = answers.at(dis(generator));
-  _chatLogic->setChatBotHandle(this);
+  //_chatLogic->SetChatBotHandle(this);
 
   // send selected node answer to user
   _chatLogic->SendMessageToUser(answer);
