@@ -46,13 +46,15 @@ ChatBot::~ChatBot() {
 // move constructor
 ChatBot::ChatBot(ChatBot &&src) {
   std::cout << "ChatBot Move Constructor called" << std::endl;
-  _image = new wxBitmap(*src._image);
-  src._image = nullptr;
-  _rootNode = src._rootNode;
-  src._rootNode = nullptr;
-  _chatLogic = src._chatLogic;
+  _image = src.GetImageHandle();
+  src.ResetImageHandle();
+
+  _rootNode = src.GetRootNode();
+  src.SetRootNode(nullptr);
+
+  _chatLogic = src.GetChatLogicHandle();
   _chatLogic->SetChatbotHandle(this);
-  src._chatLogic = nullptr;
+  src.SetChatLogicHandle(nullptr);
 }
 
 // move overload
@@ -60,21 +62,27 @@ ChatBot &ChatBot::operator=(ChatBot &&src) {
   std::cout << "ChatBot Move Assign called" << std::endl;
   if (this == &src)
     return *this;
-  delete _image;
-  _image = src._image;
-  src._image = nullptr;
-  _rootNode = src._rootNode;
-  src._rootNode = nullptr;
-  _chatLogic = src._chatLogic;
-  src._chatLogic = nullptr;
+  this->~ChatBot();
+
+  _image = src.GetImageHandle();
+  src.ResetImageHandle();
+
+  _rootNode = src.GetRootNode();
+  src.SetRootNode(nullptr);
+
+  _chatLogic = src.GetChatLogicHandle();
+  _chatLogic->SetChatbotHandle(this); 
+  src.SetChatLogicHandle(nullptr);
 }
 
 // copy constructor
 ChatBot::ChatBot(const ChatBot &src) {
   std::cout << "ChatBot Copy Constructor" << std::endl;
   _image = new wxBitmap(*src._image);
-  _rootNode = src._rootNode;
-  _chatLogic = src._chatLogic;
+
+  _rootNode = src.GetRootNode();
+
+  _chatLogic = src.GetChatLogicHandle();
   _chatLogic->SetChatbotHandle(this);
 }
 
@@ -84,9 +92,12 @@ ChatBot &ChatBot::operator=(const ChatBot &src) {
   if (this == &src)
     return *this;
   this->~ChatBot();
+
   _image = new wxBitmap(*src._image);
-  _rootNode = src._rootNode;
-  _chatLogic = src._chatLogic;
+
+  _rootNode = src.GetRootNode();
+
+  _chatLogic = src.GetChatLogicHandle();
   _chatLogic->SetChatbotHandle(this);
 
   return *this;
