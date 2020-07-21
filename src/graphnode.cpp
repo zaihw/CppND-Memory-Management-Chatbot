@@ -1,5 +1,6 @@
 #include "graphnode.h"
 #include "graphedge.h"
+#include <memory>
 
 GraphNode::GraphNode(int id) { _id = id; }
 
@@ -7,7 +8,7 @@ GraphNode::~GraphNode() {
   //// STUDENT CODE
   ////
 
-  delete _chatBot;
+  // delete _chatBot;
 
   ////
   //// EOF STUDENT CODE
@@ -32,7 +33,6 @@ void GraphNode::MoveChatbotHere(ChatBot chatbot) {
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode) {
   newNode->MoveChatbotHere(std::move(_chatBot));
-  _chatBot = nullptr; // invalidate pointer at source
 }
 ////
 //// EOF STUDENT CODE
